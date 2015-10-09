@@ -3,13 +3,13 @@ import Queue
 import threading
 
 class Client():
-	def __init__(self, queue):
+	def __init__(self, queue, ipad, username):
 		self.queue = queue
 
 		self.connected = False
-		self.host = '192.168.0.18'
+		self.host = ipad
 		self.port = 5000
-
+		self.username = username
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.s.settimeout(2)
 
@@ -37,7 +37,7 @@ class Client():
 			
 			for sock in read_sockets:
 				#incoming message from remote server
-				print("huehueue")
+				#print("huehueue")
 				if sock == self.s:
 					data = sock.recv(4096)
 					if not data :
@@ -56,6 +56,8 @@ class Client():
 
 
 if __name__ == "__main__":
+	print "Please enter the following information"
+	ipad = raw_input("Host: ")
 	queue = Queue.Queue()
-	client = Client(queue)
+	client = Client(queue, ipad)
 	threading.Thread(target=client.connectToChatServer, args=()).start()
